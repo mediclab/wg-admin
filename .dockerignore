@@ -10,11 +10,7 @@
 .styleci.yml
 _ide_helper.php
 phpunit.xml
-package-lock.json
 docker-compose.yml
-tailwind.config.js
-webpack.mix.js
-composer.lock
 Dockerfile-dev
 Dockerfile-php
 Dockerfile-nginx
