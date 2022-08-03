@@ -27,9 +27,6 @@ bootstrap/cache/*.php
 database/factories
 database/seeders
 tests/
-resources/css/
-resources/js/
-resources/img/
 /public/assets/
 /public/img/
 /public/livewire/
