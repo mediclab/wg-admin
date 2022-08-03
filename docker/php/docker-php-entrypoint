@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+    sudo -u www-data php artisan container:init
+    set -- php-fpm "$@"
+fi
+
+if [ "$@" == "php-fpm" ]; then
+    sudo -u www-data php artisan container:init
+fi
+
+exec "$@"

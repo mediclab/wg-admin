@@ -1,0 +1,47 @@
+@import './../../vendor/filament/forms/dist/module.esm.css';
+@import '~tippy.js/dist/tippy.css';
+@import '~tippy.js/themes/light.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.modal-max-width-sm {
+    @apply sm:max-w-sm;
+}
+
+.modal-max-width-md {
+    @apply sm:max-w-md;
+}
+
+.modal-max-width-lg {
+    @apply sm:max-w-md md:max-w-lg;
+}
+
+.modal-max-width-xl {
+    @apply sm:max-w-md md:max-w-xl;
+}
+
+.modal-max-width-2xl {
+    @apply sm:max-w-md md:max-w-xl lg:max-w-2xl;
+}
+
+.modal-max-width-3xl {
+    @apply sm:max-w-md md:max-w-xl lg:max-w-3xl;
+}
+
+.modal-max-width-4xl {
+    @apply sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-4xl;
+}
+
+.modal-max-width-5xl {
+    @apply sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-5xl;
+}
+
+.modal-max-width-6xl {
+    @apply sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-5xl 2xl:max-w-6xl;
+}
+
+.modal-max-width-7xl {
+    @apply sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-5xl 2xl:max-w-7xl;
+}

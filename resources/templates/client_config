@@ -1,0 +1,10 @@
+[Interface]
+PrivateKey = {CLIENT_PRIVATE_KEY}
+Address = {CLIENT_ADDRESS}
+{ADDITIONAL_FIELDS}
+[Peer]
+PublicKey = {SERVER_PUBLIC_KEY}
+PresharedKey = {CLIENT_PRESHARED_KEY}
+AllowedIPs = {WG_ALLOWED_IPS}
+PersistentKeepalive = {WG_PERSISTENT_KEEPALIVE}
+Endpoint = {WG_HOST}:{WG_PORT}

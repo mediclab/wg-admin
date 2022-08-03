@@ -1,0 +1,56 @@
+FROM php:8.0-fpm-alpine
+
+ARG UID=1000
+ARG GID=1000
+ENV UID=${UID}
+ENV GID=${GID}
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# Allow Composer to be run as root
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+RUN apk add --no-cache --update \
+      sudo \
+      wireguard-tools \
+      nodejs \
+      npm \
+    && apk add --no-cache --update --virtual .phpDeps \
+      # for GD
+      freetype \
+      libpng \
+      libjpeg-turbo \
+      # for zip
+      libzip \
+      icu-libs \
+      postgresql-libs \
+    && apk add --no-cache --update --virtual .buildDeps \
+      libzip-dev \
+      postgresql-dev \
+      # for GD
+      freetype-dev \
+      libpng-dev  \
+      libjpeg-turbo-dev \
+      libxslt-dev \
+    && docker-php-ext-configure gd \
+            --with-freetype=/usr/include/ \
+            --with-jpeg=/usr/include/ \
+    && docker-php-ext-configure pdo_pgsql --with-pdo-pgsql \
+    && docker-php-ext-configure intl --enable-intl \
+    && docker-php-ext-install -j$(nproc) \
+      gd \
+      intl \
+      pdo_pgsql \
+      zip \
+    && apk del .buildDeps \
+    && echo "Defaults lecture = never" >> /etc/sudoers \
+    && echo "www-data ALL=(root) NOPASSWD: /usr/bin/wg-quick, /usr/bin/wg, /usr/bin/tee" >> /etc/sudoers.d/www-data
+
+WORKDIR /var/www/html
+
+RUN addgroup --gid ${GID} www
+RUN adduser --uid ${UID} --shell /bin/bash --ingroup www --disabled-password www
+
+USER www
+
+COPY --chown=www:www . ./
