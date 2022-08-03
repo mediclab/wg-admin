@@ -13,7 +13,7 @@ WORKDIR /app
 COPY --from=vendor_builder /app/vendor /app/vendor
 RUN npm i && npm run production
 
-FROM nginx:alpine3.16
+FROM nginx:alpine
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
