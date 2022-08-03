@@ -1,6 +1,7 @@
 .env
 .editorconfig
 .git/
+.github/
 .gitattributes
 .gitignore
 .dockerignore

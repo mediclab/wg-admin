@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker images
+        env:
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          VERSION: beta
+        run: |
+          docker build . --file Dockerfile-php --tag $DOCKER_LOGIN/wg-admin:$VERSION --tag $DOCKER_LOGIN/wg-admin:latest
+          docker build . --file Dockerfile-nginx --tag $DOCKER_LOGIN/wg-admin-nginx:$VERSION --tag $DOCKER_LOGIN/wg-admin-nginx:latest
+      - name: Push image to Private Docker
+        env:
+          DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+        run: |
+          echo "$DOCKER_PASSWD" | docker login --username "$DOCKER_LOGIN" --password-stdin
+          docker push -a $DOCKER_LOGIN/wg-admin
+          docker push -a $DOCKER_LOGIN/wg-admin-nginx
