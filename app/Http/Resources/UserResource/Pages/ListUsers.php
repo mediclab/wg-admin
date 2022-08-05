@@ -5,6 +5,7 @@ namespace App\Http\Resources\UserResource\Pages;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\ServerService;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -26,14 +27,27 @@ class ListUsers extends ListRecords
                 $service->create($user, ['address' => $data['server']['address'], 'port' => $data['server']['port']]);
             });
 
-            $this->notify('success', __('User successfully created'));
+            Notification::make()
+                ->title(__('User successfully created'))
+                ->success()
+                ->send()
+            ;
         } catch (\Throwable $e) {
             \Log::error('Error user creating', ['exception' => $e]);
 
-            $this->notify('danger', __('Error occurred. User is not created'));
+            Notification::make()
+                ->title(__('Error occurred. User is not created'))
+                ->danger()
+                ->body($e->getMessage())
+                ->persistent()
+                ->send()
+            ;
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function getActions(): array
     {
         return [
