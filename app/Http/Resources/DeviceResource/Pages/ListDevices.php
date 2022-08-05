@@ -5,6 +5,7 @@ namespace App\Http\Resources\DeviceResource\Pages;
 use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use App\Services\DeviceService;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Contracts\HasTable;
@@ -19,9 +20,20 @@ class ListDevices extends ListRecords
     {
         try {
             $service->addDeviceByCurrentUser($data);
-            $this->notify('success', __('Device successfully added to server'));
+
+            Notification::make()
+                ->title(__('Device successfully added to server'))
+                ->success()
+                ->send()
+            ;
         } catch (\Throwable $e) {
-            $this->notify('danger', __('Error occurred. Device is not added to server'));
+            Notification::make()
+                ->title(__('Error occurred. Device is not added to server'))
+                ->danger()
+                ->body($e->getMessage())
+                ->persistent()
+                ->send()
+            ;
         }
     }
 
@@ -37,6 +49,9 @@ class ListDevices extends ListRecords
         }, "{$record->name}.conf");
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function getActions(): array
     {
         return [

@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Helpers\Util;
 use App\Http\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use App\Rules\InIpRange;
+use App\Validators\ServerValidator;
+use App\Validators\UserValidator;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -30,7 +30,7 @@ class UserResource extends Resource
                 Tables\Columns\ImageColumn::make('gravatar')
                     ->rounded()
                     ->label('')
-                    ->getStateUsing(static fn (User $model) => $model->gravatar()),
+                    ->getStateUsing(static fn (User $record) => $record->gravatar()),
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
@@ -123,16 +123,16 @@ class UserResource extends Resource
             Forms\Components\TextInput::make('name')
                 ->label(__('Username'))
                 ->required()
-                ->rules('required|string|min:6|max:255'),
+                ->rules(UserValidator::rules()['name']),
             Forms\Components\TextInput::make('email')
                 ->label(__('Email'))
                 ->required()
-                ->rules('required|email|unique:users,email'),
+                ->rules(UserValidator::rules()['email']),
             Forms\Components\TextInput::make('password')
                 ->label(__('Password'))
                 ->password()
                 ->required()
-                ->rules('required|min:8|confirmed'),
+                ->rules(UserValidator::rules()['password']),
             Forms\Components\TextInput::make('password_confirmation')
                 ->required()
                 ->password()
@@ -140,23 +140,11 @@ class UserResource extends Resource
             Forms\Components\TextInput::make('server.address')
                 ->label(__('Server address'))
                 ->required()
-                ->rules([
-                    'required',
-                    'ipv4',
-                    'ends_with:.1',
-                    'unique:servers,address',
-                    new InIpRange($addresses['max'], $addresses['min']),
-                ]),
+                ->rules(ServerValidator::rules($addresses, $ports)['address']),
             Forms\Components\TextInput::make('server.port')
                 ->label(__('Server port'))
                 ->required()
-                ->rules([
-                    'required',
-                    'integer',
-                    'unique:servers,port',
-                    "min:{$ports['min']}",
-                    "max:{$ports['max']}",
-                ]),
+                ->rules(ServerValidator::rules($addresses, $ports)['port']),
             Forms\Components\Toggle::make('is_admin')
                 ->label(__('Administrator')),
         ];
