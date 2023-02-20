@@ -115,12 +115,22 @@ class Device extends Model
 
     public function getTransferTxAttribute(): ?int
     {
-        return $this->getEnrich()?->getTransferTx();
+        $traffic = \Cache::getMultiple([
+            "wg_tx_memory_{$this->device_id}",
+            "wg_tx_current_{$this->device_id}"
+        ], [0, $this->getEnrich()?->getTransferTx() ?? 0]);
+
+        return array_sum($traffic);
     }
 
     public function getTransferRxAttribute(): ?int
     {
-        return $this->getEnrich()?->getTransferRx();
+        $traffic = \Cache::getMultiple([
+            "wg_rx_memory_{$this->device_id}",
+            "wg_rx_current_{$this->device_id}"
+        ], [0, $this->getEnrich()?->getTransferRx() ?? 0]);
+
+        return array_sum($traffic);
     }
 
     public function getLatestHandshakeAtAttribute(): ?Carbon

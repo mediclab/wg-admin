@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Server;
 use App\Services\ServerService;
-use App\Services\WireguardService;
 use Illuminate\Console\Command;
 
 class ContainerInit extends Command

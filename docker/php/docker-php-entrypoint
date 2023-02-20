@@ -4,10 +4,10 @@ set -e
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
     sudo -u www-data php artisan container:init
-    set -- php-fpm "$@"
+    set -- php -d variables_order=EGPCS /var/www/html/artisan octane:start "$@"
 fi
 
-if [ "$@" == "php-fpm" ]; then
+if [ "$@" == "php" ]; then
     sudo -u www-data php artisan container:init
 fi
 

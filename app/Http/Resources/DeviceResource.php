@@ -61,7 +61,8 @@ class DeviceResource extends Resource
     public static function getTableColumns(): array
     {
         return [
-            Tables\Columns\BooleanColumn::make('isOnline')
+            Tables\Columns\IconColumn::make('isOnline')
+                ->boolean()
                 ->trueIcon('heroicon-o-status-online')
                 ->falseIcon('heroicon-o-status-offline')
                 ->trueColor('success')
@@ -82,7 +83,8 @@ class DeviceResource extends Resource
                 ->dateTime()
                 ->formatStateUsing(static fn (?Carbon $state): string => null !== $state ? $state->diffForHumans() : __('never'))
                 ->label(__('Last activity')),
-            Tables\Columns\BooleanColumn::make('is_active')
+            Tables\Columns\IconColumn::make('is_active')
+                ->boolean()
                 ->sortable()
                 ->label(__('Status')),
             Tables\Columns\TextColumn::make('transferTx')
@@ -171,7 +173,7 @@ class DeviceResource extends Resource
             $query->where('server_id', $user->server->getKey());
         }
 
-        return $query;
+        return $query->with('server.user');
     }
 
     public static function getPages(): array

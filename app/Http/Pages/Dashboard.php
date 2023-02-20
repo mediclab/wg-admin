@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 class Dashboard extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static ?string $navigationIcon = 'heroicon-o-desktop-computer';
 
     protected static ?int $navigationSort = -2;
 
@@ -53,5 +53,10 @@ class Dashboard extends Page
     public function mount(): void
     {
         abort_unless((bool) \Auth::user()?->isAdmin(), 403);
+    }
+
+    protected function getColumns(): int | array
+    {
+        return 2;
     }
 }

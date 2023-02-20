@@ -28,7 +28,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('gravatar')
-                    ->rounded()
+                    ->circular()
                     ->label('')
                     ->getStateUsing(static fn (User $record) => $record->gravatar()),
                 Tables\Columns\TextColumn::make('name')
@@ -41,10 +41,12 @@ class UserResource extends Resource
                     ->label(__('Server')),
                 Tables\Columns\TextColumn::make('server.port')
                     ->label(__('Port')),
-                Tables\Columns\BooleanColumn::make('is_admin')
+                Tables\Columns\IconColumn::make('is_admin')
+                    ->boolean()
                     ->sortable()
                     ->label(__('Administrator')),
-                Tables\Columns\BooleanColumn::make('is_active')
+                Tables\Columns\IconColumn::make('is_active')
+                    ->boolean()
                     ->sortable()
                     ->label(__('Activity')),
                 Tables\Columns\TextColumn::make('created_at')

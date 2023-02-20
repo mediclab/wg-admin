@@ -3,11 +3,14 @@
 namespace App\Http\Pages;
 
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Route;
 
 class Home extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-home';
+
+    protected static ?int $navigationSort = -3;
 
     protected static string $view = 'pages.home';
 
@@ -25,6 +28,14 @@ class Home extends Page
 
     protected static function shouldRegisterNavigation(): bool
     {
-        return !\Auth::user()?->isAdmin();
+        return \Auth::user()?->isAdmin();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHeading(): string | Htmlable
+    {
+        return '';
     }
 }
