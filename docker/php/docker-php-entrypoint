@@ -7,8 +7,4 @@ if [ "${1#-}" != "$1" ]; then
     set -- php -d variables_order=EGPCS /var/www/html/artisan octane:start "$@"
 fi
 
-if [ "$@" == "php" ]; then
-    sudo -u www-data php artisan container:init
-fi
-
 exec "$@"

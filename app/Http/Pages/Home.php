@@ -28,7 +28,7 @@ class Home extends Page
 
     protected static function shouldRegisterNavigation(): bool
     {
-        return \Auth::user()?->isAdmin();
+        return true;
     }
 
     /**
