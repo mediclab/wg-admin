@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Device;
+use App\Services\ServerService;
 use Illuminate\Console\Command;
 
 class DeviceTrafficUpdate extends Command
@@ -21,12 +22,25 @@ class DeviceTrafficUpdate extends Command
      */
     protected $description = 'Update devices traffic in redis db';
 
-    public function handle(): int
+    public function handle(ServerService $serverService): int
     {
         try {
-            Device::each(static function (Device $device) {
+            Device::each(static function (Device $device) use ($serverService) {
+                if (null === $device->server) {
+                    return null;
+                }
+
+                /** @var \App\DTO\EnrichDevice $data */
+                $data = app(ServerService::class)
+                    ->getWgDevicesInfo($device->server)[$device->public_key] ?? null
+                ;
+
+                if (null === $data) {
+                    return null;
+                }
+
                 $currentTx = \Cache::get("wg_tx_current_{$device->device_id}", 0);
-                $realtimeTx = $device->transfer_tx ?? 0;
+                $realtimeTx = $data->getTransferTx() ?? 0;
 
                 if ($currentTx > $realtimeTx) {
                     \Cache::increment("wg_tx_memory_{$device->device_id}", $currentTx);
@@ -35,7 +49,7 @@ class DeviceTrafficUpdate extends Command
                 \Cache::set("wg_tx_current_{$device->device_id}", $realtimeTx);
 
                 $currentRx = \Cache::get("wg_rx_current_{$device->device_id}", 0);
-                $realtimeRx = $device->transfer_rx ?? 0;
+                $realtimeRx = $data->getTransferRx() ?? 0;
 
                 if ($currentRx > $realtimeRx) {
                     \Cache::increment("wg_rx_memory_{$device->device_id}", $currentRx);
