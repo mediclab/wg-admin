@@ -1,8 +1,8 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
+  release:
+    types: [released]
 
 jobs:
   build:
@@ -13,10 +13,8 @@ jobs:
       - name: Build the Docker images
         env:
           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-          VERSION: beta
         run: |
-          docker build . --file Dockerfile-php --tag $DOCKER_LOGIN/wg-admin:$VERSION --tag $DOCKER_LOGIN/wg-admin:latest
-          docker build . --file Dockerfile-nginx --tag $DOCKER_LOGIN/wg-admin-nginx:$VERSION --tag $DOCKER_LOGIN/wg-admin-nginx:latest
+          docker build . --file Dockerfile-php --tag $DOCKER_LOGIN/wg-admin:${{ github.event.release.tag_name }} --tag $DOCKER_LOGIN/wg-admin:latest
       - name: Push image to Private Docker
         env:
           DOCKER_PASSWD: ${{ secrets.DOCKER_PASSWD }}
@@ -24,4 +22,3 @@ jobs:
         run: |
           echo "$DOCKER_PASSWD" | docker login --username "$DOCKER_LOGIN" --password-stdin
           docker push -a $DOCKER_LOGIN/wg-admin
-          docker push -a $DOCKER_LOGIN/wg-admin-nginx

@@ -6,19 +6,9 @@ services:
             context: .
             dockerfile: Dockerfile-dev
         container_name: app
+        command: sh -c "php -d variables_order=EGPCS /var/www/html/artisan octane:start --host=0.0.0.0 --rpc-port=6001 --port=80 --watch"
         restart: unless-stopped
         working_dir: /var/www/html
-        volumes:
-            - ./:/var/www/html
-        networks:
-            - wg-admin
-
-    webserver:
-        build:
-            context: .
-            dockerfile: Dockerfile-nginx
-        container_name: webserver
-        restart: unless-stopped
         ports:
             - "8080:80"
             - "8443:443"
@@ -42,10 +32,21 @@ services:
         networks:
             - wg-admin
 
+    redis:
+        image: redis:7.0-alpine3.17
+        volumes:
+            - rddata:/data
+        ports:
+            - "6379:6379"
+        networks:
+            - wg-admin
+
 networks:
     wg-admin:
         driver: bridge
 
 volumes:
     dbdata:
+        driver: local
+    rddata:
         driver: local

@@ -6,6 +6,7 @@ use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use App\Services\DeviceService;
 use Filament\Http\Livewire\Concerns\CanNotify;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Tables;
 use Filament\Forms;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class DevicesTable extends BaseWidget
 {
     use CanPoll;
-    use CanNotify;
 
     protected int | string | array $columnSpan = 'full';
 
@@ -40,9 +40,9 @@ class DevicesTable extends BaseWidget
     {
         try {
             $service->addDeviceByCurrentUser($data);
-            $this->notify('success', __('Device successfully added to server'));
+            Notification::make()->success()->title(__('Device successfully added to server'))->send();
         } catch (\Throwable $e) {
-            $this->notify('danger', __('Error occurred. Device is not added to server'));
+            Notification::make()->success()->title(__('Error occurred. Device is not added to server'))->send();
         }
     }
 

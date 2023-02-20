@@ -12,11 +12,13 @@
         "filament/tables": "^2.13",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
+        "laravel/octane": "^1.4",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.10",
         "markrogoyski/ipv4-subnet-calculator": "^4.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spiral/roadrunner": "^2.8.2",
         "symfony/process": "^6.0",
         "wire-elements/modal": "^1.0",
         "yepsua/filament-themes": "^0.1.0"

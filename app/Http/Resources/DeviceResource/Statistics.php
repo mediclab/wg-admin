@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Pages;
+namespace App\Http\Resources\DeviceResource;
 
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Route;
