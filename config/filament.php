@@ -193,8 +193,8 @@ return [
         ],
         'max_content_width' => 'full',
         'notifications' => [
-            'vertical_alignment' => 'top',
-            'alignment' => 'right',
+            'vertical_alignment' => 'bottom',
+            'alignment' => 'center',
         ],
         'sidebar' => [
             'is_collapsible_on_desktop' => false,
