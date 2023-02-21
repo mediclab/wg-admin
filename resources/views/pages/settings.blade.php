@@ -2,7 +2,7 @@
     $user = \Filament\Facades\Filament::auth()->user();
 @endphp
 <x-filament::page>
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
+    <div class="mx-auto md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl px-2">
         <div class="flex items-center space-x-5">
             <div class="flex-shrink-0">
                 <div class="relative">
@@ -11,8 +11,8 @@
                 </div>
             </div>
             <div>
-                <h1 class="text-2xl font-bold text-gray-300">{{ $user->name }}</h1>
-                <p class="text-sm font-medium text-gray-500">{{ $user->email }}</p>
+                <h1 class="text-2xl font-bold">{{ $user->name }}</h1>
+                <p class="text-sm font-medium text-gray-400">{{ $user->email }}</p>
             </div>
         </div>
     </div>
