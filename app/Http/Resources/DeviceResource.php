@@ -185,6 +185,13 @@ class DeviceResource extends Resource
 
     protected static function getNavigationBadge(): ?string
     {
-        return static::$model::where('is_active', true)->count();
+        $user = \Auth::user();
+        $query = static::$model::where('is_active', true);
+
+        if ($user && !$user->isAdmin()) {
+            $query->where('server_id', $user->server->getKey());
+        }
+
+        return $query->count();
     }
 }
