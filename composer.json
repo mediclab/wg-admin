@@ -4,7 +4,7 @@
     "description": "Wireguard Admin Panel",
     "keywords": ["wireguard", "admin", "ui"],
     "license": "MIT",
-    "version": "0.9.1",
+    "version": "0.9.4",
     "require": {
         "php": "^8.0.2",
         "filament/filament": "^2.0",
