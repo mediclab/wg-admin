@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ServerService;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -104,6 +105,18 @@ class User extends Authenticatable implements FilamentUser
             $imageset,
             $rating
         );
+    }
+
+    /**
+     * @throws \App\Exceptions\Exception\WireguardException
+     */
+    public function delete(): bool | null
+    {
+        if ($this->server) {
+            app(ServerService::class)->delete($this->server);
+        }
+
+        return parent::delete();
     }
 
     public function canAccessFilament(): bool
