@@ -24,7 +24,7 @@ RUN npm i && npm run production
 FROM php:8.1-alpine3.16
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-COPY --from=spiralscout/roadrunner:2.12.2 /usr/bin/rr /usr/bin/rr
+COPY --from=spiralscout/roadrunner:2.12.3 /usr/bin/rr /usr/bin/rr
 
 RUN apk add --no-cache --update \
       sudo \

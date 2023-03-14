@@ -21,15 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Filament::registerScripts([
-            asset('assets/js/extend.js')
-        ], true);
-
-        Filament::registerRenderHook(
-            'body.start',
-            static fn (): string => Blade::render('@livewire(\'livewire-ui-modal\')'),
-        );
-
         Filament::serving(static function () {
             Filament::registerUserMenuItems([
                 'settings' => UserMenuItem::make()
